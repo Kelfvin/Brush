@@ -30,7 +30,9 @@ def rmove_fault_note(title):
     solve_no_note()
     file_in = open('./fault_note/fault_note', mode='rb')
     content = file_in.read()
-    fault_dic = pickle.loads(content)
+    fault_dic = {}
+    if (len(content)):
+        fault_dic = pickle.loads(content)
 
     if(title in fault_dic):
         del fault_dic[title]

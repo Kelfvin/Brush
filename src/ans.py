@@ -14,13 +14,16 @@ def ans():
     n = 0 
     for name in file_list:
         section = re.findall(r'(.*)\.md',name)[0]
-        print('[{}].'.format(n),section)
+        print('[{}].'.format(n),section,trace.get_process(section))
         n+=1
 
-    choice = input('\n请输入你要进行的章节选项(输入u返回上一级菜单)：')
+    choice = input('\n请输入你要进行的章节选项(输入u返回上一级菜单,q退出)[u/q]：')
 
     if(choice == 'u' or choice == 'U'):
         return
+
+    elif(choice == 'q' or choice == 'Q'):
+        exit()
 
     else:
         file = open('./bank/'+file_list[int(choice)],mode='rt',encoding='utf-8')
@@ -39,7 +42,7 @@ def ans():
             trace.store_trace(section,index)
             os.system('cls')
             print(title,'\n')
-            print('({}/{})'.format(index+1,1+len(problems)))
+            print('({}/{})'.format(index+1,len(problems)))
             print()
 
             type = re.findall(r'\((?P<type>\S+)\)',problems[index])[0]

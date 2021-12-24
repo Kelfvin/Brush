@@ -59,7 +59,7 @@ def review_fault():
 
         os.system('cls')
         print('错题回顾')
-        print('({}/{})'.format(times,1+len(fault_dic)))
+        print('({}/{})'.format(times,len(fault_dic)))
         print(title)
         print(opt_key['options'],'\n')
 
@@ -84,9 +84,21 @@ def review_fault():
         
     choice = input('错题做完了！\n[任意键]退出\n[u]返回主菜单\n请输入你的选择[*|q]:')
 
-    if(choice =='u'):
+    if(choice =='u' or choice == 'U'):
         return
 
     else:
         exit()
         
+def get_fault_note_numbers():
+    solve_no_note()
+    file_in = open('./fault_note/fault_note', mode='rb')
+    content = file_in.read()
+    fault_dic = {}
+    if (len(content)):
+        fault_dic = pickle.loads(content)
+        num =  len(fault_dic)
+        return '({}道错题)'.format(num)
+
+    else:
+        return '(无错题)'

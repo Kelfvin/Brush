@@ -1,5 +1,6 @@
 import os
 import pickle
+import re
 
 
 def store_trace(section, trace):
@@ -19,3 +20,20 @@ def get_trace(section):
 
     else:
         return 0
+
+
+def get_process(section):
+    file = open('./bank/{}.md'.format(section),'rt',encoding='utf-8')
+    content = file.read()
+    total =  len(re.findall(r'### ',content))
+
+    file_name = './trace/{}.trace'.format(section)
+    if(os.path.isfile(file_name)):
+        file_in = open(file_name,'rb')
+        content = file_in.read()
+        trace = get_trace(section)
+        return '({}/{})'.format(trace,total)
+
+    else:
+        return '(0/{})'.format(total)
+        

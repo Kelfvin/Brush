@@ -5,14 +5,14 @@ import pickle
 
 
 def solve_no_note():
-    if (not os.path.isfile('./fault_note/fault_note')):
-        file = open('./fault_note/fault_note', 'wb')
+    if (not os.path.isfile('.\\fault_note\\fault_note')):
+        file = open('.\\fault_note\\fault_note', 'wb')
         file.close()
 
 
 def add_fault_note(title, options, key):
     solve_no_note()
-    file_in = open('./fault_note/fault_note', mode='rb')
+    file_in = open('.\\fault_note\\fault_note', mode='rb')
     content = file_in.read()
     fault_dic = {}
     if (len(content)):
@@ -24,14 +24,14 @@ def add_fault_note(title, options, key):
 
         file_in.close()
 
-        file_out = open('./fault_note/fault_note', mode='wb')
+        file_out = open('.\\fault_note\\fault_note', mode='wb')
         pickle.dump(fault_dic, file_out)
         file_out.close()
 
 
 def rmove_fault_note(title):
     solve_no_note()
-    file_in = open('./fault_note/fault_note', mode='rb')
+    file_in = open('.\\fault_note\\fault_note', mode='rb')
     content = file_in.read()
     fault_dic = {}
     if (len(content)):
@@ -41,7 +41,7 @@ def rmove_fault_note(title):
         del fault_dic[title]
         file_in.close()
 
-        file_out = open('./fault_note/fault_note', mode='wb')
+        file_out = open('.\\fault_note\\fault_note', mode='wb')
         pickle.dump(fault_dic, file_out)
         file_out.close()
 
@@ -49,7 +49,7 @@ def rmove_fault_note(title):
 def review_fault():
     os.system('cls' if os.name == 'nt' else 'clear')
     solve_no_note()
-    file_in = open('./fault_note/fault_note', mode='rb')
+    file_in = open('.\\fault_note\\fault_note', mode='rb')
     content = file_in.read()
     fault_dic = {}
     if (len(content)):
@@ -98,7 +98,7 @@ def review_fault():
 
 def get_fault_note_numbers():
     solve_no_note()
-    file_in = open('./fault_note/fault_note', mode='rb')
+    file_in = open('.\\fault_note\\fault_note', mode='rb')
     content = file_in.read()
     fault_dic = {}
     if (len(content)):

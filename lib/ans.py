@@ -2,13 +2,13 @@
 import os
 import re
 import pickle
-import src.fault_note as fault_note
-import src.trace as trace
+import lib.fault_note as fault_note
+import lib.trace as trace
 
 
 def ans():
 
-    file_list = os.listdir(r'./bank/')
+    file_list = os.listdir('.\\bank\\')
     os.system('cls' if os.name == 'nt' else 'clear')
     print('题库列表：')
 
@@ -27,7 +27,7 @@ def ans():
         exit()
 
     else:
-        file = open('./bank/' + file_list[int(choice)],
+        file = open('.\\bank\\' + file_list[int(choice)],
                     mode='rt',
                     encoding='utf-8')
         content = file.read()

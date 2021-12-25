@@ -5,11 +5,11 @@ import os
 
 def proc():
     os.system('cls' if os.name == 'nt' else 'clear')
-    file_list = os.listdir(r'./raw/')
+    file_list = os.listdir('.\\raw\\')
     for i in range(0, len(file_list)):
-        file_in = open('./raw/d{}'.format(i) + '.in', encoding='utf-8', mode='rt')
+        file_in = open('.\\raw\\d{}'.format(i) + '.in', encoding='utf-8', mode='rt')
         content = file_in.read()
-        file_out = open('./bank/第{}章'.format(i) + '.md', mode='wt', encoding='utf-8')
+        file_out = open('.\\bank\\第{}章'.format(i) + '.md', mode='wt', encoding='utf-8')
         content = re.sub(r'我的答案:.*? (?P<c_asw>正确答案: [\s\S]*?)\n[\s\S]*?分',
                          '\g<c_asw>\n', content)
         content = re.sub(r'作业详情', '', content)

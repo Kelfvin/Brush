@@ -3,7 +3,7 @@ import os
 
 
 def proc():
-    os.system('cls')
+    os.system('cls' if os.name == 'nt' else 'clear')
     file_list = os.listdir(r'./raw/')
     for i in range(0, len(file_list)):
         file_in = open('./raw/d{}'.format(i) + '.in', encoding='utf-8', mode='rt')
@@ -20,10 +20,11 @@ def proc():
         content = re.sub(r'，*\s*[0-9]+\.*[0-9]*分', '', content)
         content = re.sub(r'最终成绩.*\n', '', content)
         content = re.sub(r'作答记录.*\n', '', content)
+        content = re.sub(r'答案解析.*\n', '', content)
         content = content.strip()
         content = re.sub(r'^.+\n', '# ' + '第{}章\n'.format(i), content)
         content = re.sub(r'\n', '\n\n', content)
-        content = re.sub(r'(?P<sec_t>一\. .+?\n)', '## ' + '\g<sec_t>', content)
+        content = re.sub(r'(?P<sec_t>[一二三]\. .+?\n)', '## ' + '\g<sec_t>', content)
         content = re.sub(r'(?P<th_t>[0-9]+\. .+?\n)', '### ' + '\g<th_t>',
                          content)
 

@@ -5,7 +5,7 @@ import src.proc as proc
 import src.fault_note as fault_note
 
 while (True):
-    os.system('cls')
+    os.system('cls' if os.name == 'nt' else 'clear')
 
     print('菜单:', '\n', '*' * 30)
     print('[1] 开始答题')
@@ -28,7 +28,7 @@ while (True):
         fault_note.review_fault()
 
     elif (model == '4'):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         confirm = input('确认要清空错题记录吗？[Y/N]:')
         if (confirm == 'y' or confirm == 'Y'):
             file = open('./fault_note/fault_note', 'wb')
@@ -36,7 +36,7 @@ while (True):
             print('已清空错题记录！')
 
     elif (model == '5'):
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         confirm = input('确认要清空刷题进度记录吗？[Y/N]:')
         if (confirm == 'y' or confirm == 'Y'):
             file_list = os.listdir('./trace/')

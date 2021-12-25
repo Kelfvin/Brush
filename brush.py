@@ -1,9 +1,9 @@
 # coding=utf-8
 import re
 import os
-import src.ans as ans
-import src.proc as proc
-import src.fault_note as fault_note
+import lib.ans as ans
+import lib.proc as proc
+import lib.fault_note as fault_note
 
 while (True):
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -32,7 +32,7 @@ while (True):
         os.system('cls' if os.name == 'nt' else 'clear')
         confirm = input('确认要清空错题记录吗？[Y/N]:')
         if (confirm == 'y' or confirm == 'Y'):
-            file = open('./fault_note/fault_note', 'wb')
+            file = open('.\\fault_note\\fault_note', 'wb')
             file.close()
             print('已清空错题记录！')
 
@@ -40,9 +40,9 @@ while (True):
         os.system('cls' if os.name == 'nt' else 'clear')
         confirm = input('确认要清空刷题进度记录吗？[Y/N]:')
         if (confirm == 'y' or confirm == 'Y'):
-            file_list = os.listdir('./trace/')
+            file_list = os.listdir('.\\trace\\')
             for i in file_list:
-                os.remove('./trace/{}'.format(i))
+                os.remove('.\\trace\\{}'.format(i))
             print('已清空刷题进度记录！')
 
         else:

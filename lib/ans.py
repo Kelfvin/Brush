@@ -1,8 +1,9 @@
+# coding=utf-8
 import os
 import re
 import pickle
-import src.fault_note as fault_note
-import src.trace as trace
+import lib.fault_note as fault_note
+import lib.trace as trace
 
 
 def ans():

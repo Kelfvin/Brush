@@ -1,8 +1,9 @@
+# coding=utf-8
 import re
 import os
-import src.ans as ans
-import src.proc as proc
-import src.fault_note as fault_note
+import lib.ans as ans
+import lib.proc as proc
+import lib.fault_note as fault_note
 
 while (True):
     os.system('cls' if os.name == 'nt' else 'clear')

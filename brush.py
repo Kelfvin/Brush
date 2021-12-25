@@ -1,3 +1,4 @@
+# coding=utf-8
 import re
 import os
 import src.ans as ans

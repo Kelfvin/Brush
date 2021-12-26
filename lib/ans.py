@@ -78,7 +78,7 @@ def ans():
 
             else:
                 print('错误！  正确答案：', key)
-                fault_note.add_fault_note(problems[index], options[index], key)
+                fault_note.add_fault_note(problems[index], type , options[index], key)
 
             input("输入任意键继续：")
             os.system('cls' if os.name == 'nt' else 'clear')

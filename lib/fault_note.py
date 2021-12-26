@@ -10,7 +10,7 @@ def solve_no_note():
         file.close()
 
 
-def add_fault_note(title, options, key):
+def add_fault_note(title, type, options, key):
     solve_no_note()
     file_in = open('./fault_note/fault_note', mode='rb')
     content = file_in.read()
@@ -19,7 +19,7 @@ def add_fault_note(title, options, key):
         fault_dic = pickle.loads(content)
 
     if (title not in fault_dic):
-        temp = {'options': options, 'key': key}
+        temp = {'type': type, 'options': options, 'key': key}
         fault_dic[title] = temp
 
         file_in.close()
@@ -58,6 +58,7 @@ def review_fault():
     times = 0
     for title, opt_key in fault_dic.items():
         times += 1
+        type = opt_key['type']
         options = opt_key['options']
         key = opt_key['key']
 
@@ -70,6 +71,15 @@ def review_fault():
         answer = input('请输入你的答案(输入u返回上一级,q退出)：')
         answer = answer.replace(' ', '')
         answer = answer.upper()
+
+        if type == '判断题':
+            if answer == 'A':
+                answer = '对'
+
+            elif answer == 'B':
+                answer = '错'
+
+
         if (answer == 'q' or answer == 'Q'):
             exit()
 
@@ -82,7 +92,7 @@ def review_fault():
 
         else:
             print('错误！  正确答案：', key)
-            add_fault_note(title, options, key)
+            add_fault_note(title, type, options, key)
 
         input("输入任意键继续：")
         os.system('cls' if os.name == 'nt' else 'clear')

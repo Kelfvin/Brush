@@ -158,15 +158,17 @@ class Subject:
                 if feed_back == 0:
                     return 0
 
+
             elif int(message) == len(self.sections):
                 if not self.review_fault():
                     return 0
+                
                 
             else:
                 return 0
 
     def review_fault(self):
-        M_fault_note.review_fault(self.name)
+        return M_fault_note.review_fault(self.name)
 
     def get_fault_num(self):
         return M_fault_note.get_fault_note_numbers(self.name)

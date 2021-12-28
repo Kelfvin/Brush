@@ -83,10 +83,10 @@ def review_fault(file_name):
 
 
         if (answer == 'q' or answer == 'Q'):
-            exit()
+            return 0
 
         elif (answer == 'u' or answer == 'U'):
-            return
+            return 1
 
         elif (answer == key):
             print('正确！')
@@ -99,14 +99,13 @@ def review_fault(file_name):
         input("输入任意键继续：")
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    choice = input('错题做完了！\n[q]退出\n[u]返回主菜单\n请输入你的选择[*|q]:')
+    choice = input('错题做完了！\n[q]退出\n[u]返回主菜单\n请输入你的选择[u|q]:')
 
-    if (choice == 'u' or choice == 'U'):
-        return
+    if (choice == 'q' or choice == 'Q'):
+        return 0
 
-    elif (choice == 'q' or choice == 'Q'):
-        exit()
-
+    else:
+        return 1
 
 def get_fault_note_numbers(file_name):
     solve_no_note(file_name)

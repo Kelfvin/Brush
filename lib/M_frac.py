@@ -14,7 +14,7 @@ def get_message():
 
 
 def erro_in_notion():
-    print('请输入正确的选项！')
+    print('错误！')
     input('输入任意键继续！')
 
 def react_import():
@@ -95,11 +95,11 @@ def react(message):
             sys.exit(0)
 
     else:
-        # try:
-        react_num(int(message))
+        try:
+            react_num(int(message))
 
-        # except Exception:
-        #     erro_in_notion()
+        except Exception:
+            erro_in_notion()
 
 
     

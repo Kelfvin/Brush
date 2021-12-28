@@ -22,7 +22,15 @@ class Problem:
         self.subject_name = subject_name
   
     def judge(self,answer):
-        return True if self.key == answer.replace(' ','') else False
+        answer = answer.replace(' ','')
+        if self.type == '判断题':
+            if answer == 'A':
+                answer = '对'
+
+            elif answer == 'B':
+                answer = '错'
+
+        return True if self.key ==answer  else False
 
 
     def show(self):
@@ -198,7 +206,8 @@ class Subject:
                     input('重置成功！输入任意键继续...')
                 return 1
             except:
-                pass
+                M_frac.erro_in_notion()
+                return 1
 
     def rm_fault_note(self):
         M_frac.clear()

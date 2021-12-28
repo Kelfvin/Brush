@@ -41,6 +41,7 @@ def proc(base_path,subject_name,out_file_name):
             content = re.sub(r'\n', '\n\n', content)
             content = re.sub(r'(?P<sec_t>[一二三]\. .+?\n)', '## ' + '\g<sec_t>',
                                 content)
+
             content = re.sub(r'(?P<th_t>[0-9]+\. .+?\n)', '### ' + '\g<th_t>',
                                 content)
 
@@ -48,15 +49,18 @@ def proc(base_path,subject_name,out_file_name):
             content = re.sub(r'$', '\n*****', content)
             title = re.findall(r'# (.*)\n', content)[0]
 
+
             problems = re.findall(r'### (?P<problems>.*?)\n', content)
             options = re.findall(r'### .*?\n(?P<options>[\s\S]*?)\*\*\*\*\*',
                                     content)
-
+            
             
             for index in range(0, len(problems)):
 
                 type = re.findall(r'\((?P<type>\S+)\)', problems[index])[0]
                 key = re.findall(r'正确答案: (.+?)\n', options[index])[0]
+
+                options[index] = re.sub(r'## .*?\n', '', options[index])
 
                 options[index] = re.sub(r'正确答案.*\n', '', options[index])
 
@@ -113,6 +117,9 @@ def proc_m(base_path,subject_name,out_file_name):
                 type = re.findall(r'\((?P<type>\S+)\)', problems[index])[0]
                 key = re.findall(r'正确答案: (.+?)\n', options[index])[0]
 
+                key = re.sub(r'[\[\'\,\]]','',key)
+                key = key.replace(' ','')
+
                 options[index] = re.sub(r'正确答案.*\n', '', options[index])
 
                 option = options[index]
@@ -133,3 +140,4 @@ def proc_m(base_path,subject_name,out_file_name):
     input("输入任意键继续...")
 
 proc_m('./data/bank/military/','军事理论','military.json')
+proc('./data/bank/history/','近代史','history.json')

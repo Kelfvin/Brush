@@ -114,7 +114,7 @@ class Subject:
             section_name = i.get_name()
             trace = i.get_trace()
             len = i.get_problem_num()
-            section_trace = f'{trace}/{len}'
+            section_trace = f'{trace+1}/{len}'
             dic[section_name] = section_trace
         
 
@@ -155,7 +155,7 @@ class Subject:
 
             elif message == 'D':
                 if self.rm_fault_note():
-                    pass
+                    return 1
 
                 else:
                     return 0
@@ -224,6 +224,10 @@ class Subject:
         elif message == 'Y':
             M_fault_note.reset_fault_note(self.name)
             input('删除成功！输入任意键继续...')
+            return 1
+
+        else:
+            M_frac.erro_in_notion()
             return 1
                 
 

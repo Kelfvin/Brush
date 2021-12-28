@@ -46,6 +46,7 @@ def rmove_fault_note(file_name,title):
         file_out = open(f'{base_path}{file_name}', mode='wb')
         pickle.dump(fault_dic, file_out)
         file_out.close()
+    return 1
 
 
 def review_fault(file_name):

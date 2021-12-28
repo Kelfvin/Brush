@@ -78,6 +78,7 @@ def delete_subject():
                 return 1
         except:
             erro_in_notion()
+            return 1
 
 
 

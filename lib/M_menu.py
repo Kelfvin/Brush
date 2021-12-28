@@ -43,6 +43,9 @@ def show_subjec_menu():
 
 def show_section_menu(dic,fault_num,flag = 1,cc=1,r=1):
     # 传入的是字典，章节名称，对应进度
+    # cc清屏
+    # r是否显示清除章节做题记录
+    # flag 是否显示错题菜单
     if cc:
         M_frac.clear()  
 

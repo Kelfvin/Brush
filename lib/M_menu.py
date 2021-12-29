@@ -24,14 +24,19 @@ def show_subjec_menu():
         if os.path.isfile(f'{base_path}{f}')
     ]           
     subject_list = []
+    subject_trace_list = []
     for f in file_list:
         m_subject = M_subject.from_trace_to_subject(f)
-        subject_list.append(m_subject.get_name())
+        name = m_subject.get_name()
+        subject_list.append(name)
+        did = m_subject.get_trace()
+        total = m_subject.get_total_problem_num()
+        subject_trace_list.append(f'({did}/{total})')
 
     length = len(subject_list)
 
     for index in range(0, length):
-        print(f'[{index}] {subject_list[index]}')
+        print(f'[{index}] {subject_list[index]} {subject_trace_list[index]}')
 
     print('功能：')
     print('[i] 导入题库数据')

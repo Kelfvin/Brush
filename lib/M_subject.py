@@ -61,7 +61,6 @@ class Section:
     def study(self):
         for index in range(self.trace,len(self.problems)):
             M_frac.clear()
-            self.trace = index
             item = self.problems[index]
             item.show()
             M_menu.show_exit_return_menu()
@@ -81,6 +80,8 @@ class Section:
                 print(f'错误！ 正确答案{key}')
                 item.add_fault_note()
 
+            self.trace+=1
+
             print('[*] 任意键进入下一题')
             message = M_frac.get_message()
             if(message.lower() == 'U'):
@@ -88,6 +89,16 @@ class Section:
 
             elif(message.lower() == 'Q'):
                 return 0
+
+        M_frac.clear()
+        print('题目已经做完了！')
+        M_menu.show_exit_return_menu()
+        message = M_frac.get_message()
+        if(message.lower() == 'U'):
+            return 1
+
+        elif(message.lower() == 'Q'):
+            return 0
 
     def get_name(self):
         return self.name
@@ -114,7 +125,7 @@ class Subject:
             section_name = i.get_name()
             trace = i.get_trace()
             len = i.get_problem_num()
-            section_trace = f'{trace+1}/{len}'
+            section_trace = f'{trace}/{len}'
             dic[section_name] = section_trace
         
 
@@ -229,6 +240,21 @@ class Subject:
         else:
             M_frac.erro_in_notion()
             return 1
+
+    def get_total_problem_num(self):
+        sum = 0
+        for i in self.sections:
+            sum+=i.get_problem_num()
+
+        return sum
+
+    def get_trace(self):
+        # 返回科目所作的题目总数
+        sum = 0
+        for i in self.sections:
+            sum+=i.get_trace()
+
+        return sum
                 
 
         

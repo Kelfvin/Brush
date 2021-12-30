@@ -59,9 +59,11 @@ class Section:
 
 
     def study(self):
-        for index in range(self.trace,len(self.problems)):
+        length = len(self.problems)
+        for index in range(self.trace,length):
             M_frac.clear()
             item = self.problems[index]
+            print(f'{self.name}  ({self.trace}/{length})')
             item.show()
             M_menu.show_exit_return_menu()
             answer = M_frac.get_message()
@@ -184,7 +186,7 @@ class Subject:
                 
                 
             else:
-                return 0
+                M_frac.erro_in_notion()
 
     def review_fault(self):
         return M_fault_note.review_fault(self.name)

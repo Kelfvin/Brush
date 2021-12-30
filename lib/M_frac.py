@@ -10,8 +10,12 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def get_message():
-    return input('请输入你的选择:').strip().upper()
-
+    message = input('请输入你的选择:').strip().upper()
+    message = sorted(message)
+    message = ''.join(message)
+    # 对输入字符串进行排序，适用于多选题，用户不按照正常顺序输入
+    # sorted对字符串进行排序，并返回一个列表
+    return message
 
 def erro_in_notion():
     print('错误！')

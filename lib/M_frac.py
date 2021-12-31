@@ -100,11 +100,11 @@ def react(message):
             sys.exit(0)
 
     else:
-        # try:
-        react_num(int(message))
+        try:
+            react_num(int(message))
 
-        # except Exception:
-        #     erro_in_notion()
+        except Exception:
+            erro_in_notion()
 
 
     

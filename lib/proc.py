@@ -120,6 +120,13 @@ def proc_m(base_path,subject_name,out_file_name):
                 key = re.sub(r'[\[\'\,\]]','',key)
                 key = key.replace(' ','')
 
+                if type == "判断题":
+                    if key == '正确':
+                        key = '对'
+
+                    else:
+                        key = '错'
+
                 options[index] = re.sub(r'正确答案.*\n', '', options[index])
 
                 option = options[index]

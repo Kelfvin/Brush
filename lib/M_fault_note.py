@@ -87,6 +87,12 @@ def review_fault(file_name):
 
         answer = input('请输入你的答案(输入u返回上一级,q退出)：')
         answer = answer.replace(' ', '')
+        answer = answer.replace('1','A')
+        answer = answer.replace('2','B')
+        answer = answer.replace('3','C')
+        answer = answer.replace('4','D')
+        answer = answer.replace('5','E')
+        answer = answer.replace('6','F')
         answer = answer.upper()
 
         if type == '判断题':

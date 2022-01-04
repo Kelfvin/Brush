@@ -22,6 +22,13 @@ class Problem:
         self.subject_name = subject_name
   
     def judge(self,answer):
+        answer = answer.replace('1','A')
+        answer = answer.replace('2','B')
+        answer = answer.replace('3','C')
+        answer = answer.replace('4','D')
+        answer = answer.replace('5','E')
+        answer = answer.replace('6','F')
+
         answer = answer.replace(' ','')
         if self.type == '判断题':
             if answer == 'A':

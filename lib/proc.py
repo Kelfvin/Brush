@@ -50,7 +50,7 @@ def proc(base_path,subject_name,out_file_name):
             title = re.findall(r'# (.*)\n', content)[0]
 
 
-            problems = re.findall(r'### (?P<problems>.*?)\n', content)
+            problems = re.findall(r'### [0-9]+\. ?(?P<problems>.*?)\n', content)
             options = re.findall(r'### .*?\n(?P<options>[\s\S]*?)\*\*\*\*\*',
                                     content)
             

@@ -11,8 +11,7 @@ def clear():
 
 def get_message():
     message = input('请输入你的选择:').strip().upper()
-    message = sorted(message)
-    message = ''.join(message)
+    message = message.replace(' ','')
     # 对输入字符串进行排序，适用于多选题，用户不按照正常顺序输入
     # sorted对字符串进行排序，并返回一个列表
     return message

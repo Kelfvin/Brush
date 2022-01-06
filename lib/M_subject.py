@@ -28,8 +28,10 @@ class Problem:
         answer = answer.replace('4','D')
         answer = answer.replace('5','E')
         answer = answer.replace('6','F')
+        answer = sorted(answer)
+        answer = ''.join(answer)
+        
 
-        answer = answer.replace(' ','')
         if self.type == '判断题':
             if answer == 'A':
                 answer = '对'

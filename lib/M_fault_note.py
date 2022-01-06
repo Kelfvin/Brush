@@ -22,7 +22,7 @@ def add_fault_note(file_name,title, type, options, key):
         fault_dic = pickle.loads(content)
 
     if (title not in fault_dic):
-        temp = {'type': type, 'options': options, 'key': key , 'review_times':0}
+        temp = {'type': type, 'options': options, 'key': key , 'review_times':1}
         # review_times 该错题复习的次数
         fault_dic[title] = temp
 

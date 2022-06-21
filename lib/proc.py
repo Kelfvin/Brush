@@ -1,9 +1,7 @@
 # coding=utf-8
-from distutils.filelist import findall
 import re
 import os
 import json
-from turtle import title
 
 
 def proc(base_path,subject_name,out_file_name):

@@ -1,11 +1,11 @@
 import json
 import pickle
 
-from requests import options
+
 import lib.M_frac as M_frac
 import lib.M_menu as M_menu
 import lib.M_fault_note as M_fault_note
-import os
+
 
 
 def from_trace_to_subject(file_name):

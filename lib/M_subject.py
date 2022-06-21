@@ -1,5 +1,7 @@
 import json
 import pickle
+
+from requests import options
 import lib.M_frac as M_frac
 import lib.M_menu as M_menu
 import lib.M_fault_note as M_fault_note
@@ -14,11 +16,10 @@ def from_trace_to_subject(file_name):
 
 class Problem:
     def __init__(self,subject_name,json_in) -> None:
-        (title,content) = json_in
-        self.title = title
-        self.type = content['type']
-        self.options = content ['option']
-        self.key = content['key']
+        self.title = json_in['title']
+        self.type = json_in['type']
+        self.options = json_in ['options']
+        self.key = json_in['key']
         self.subject_name = subject_name
   
     def judge(self,answer):
@@ -32,19 +33,20 @@ class Problem:
         answer = ''.join(answer)
         
 
-        if self.type == '判断题':
-            if answer == 'A':
-                answer = '对'
+        # if self.type == '判断题':
+        #     if answer == 'A':
+        #         answer = '对'
 
-            elif answer == 'B':
-                answer = '错'
+        #     elif answer == 'B':
+        #         answer = '错'
 
         return True if self.key ==answer  else False
 
 
     def show(self):
         print(self.title)
-        print(self.options)
+        for i in self.options:
+            print(i)
 
     def get_key(self):
         return self.key
@@ -58,12 +60,11 @@ class Problem:
         
 class Section:
     def __init__(self,subject_name,json_in) -> None:
-        (name,problems) = json_in
-        self.name = name
+        self.name = json_in['name']
         self.problems = []
         self.trace = 0
 
-        for i in problems['problems'].items():
+        for i in json_in['problems']:
             self.problems.append(Problem(subject_name,i))
 
 
@@ -127,7 +128,7 @@ class Subject:
     def __init__(self,json_in) -> None:
         self.name = json_in['name']
         self.sections = []
-        for i in json_in['sections'].items():
+        for i in json_in['sections']:
             self.sections.append(Section(self.name,i))
 
     def get_section_list_trace(self):

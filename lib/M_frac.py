@@ -41,7 +41,6 @@ def react_num(message):
     if message >= 0 and message <len(file_list): 
         with open(f'{base_path}{file_list[message]}','rb') as file_in:
             m_subject = pickle.loads(file_in.read())
-
             feed_back = m_subject.study()
             m_subject.to_trace()
             if(feed_back == 0):

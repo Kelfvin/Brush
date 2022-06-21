@@ -83,7 +83,8 @@ def review_fault(file_name):
         print('({}/{})'.format(times, len(fault_dic)))
         print(f'此题记忆进度 ({review_times}/{3})')
         print(title)
-        print(opt_key['options'], '\n')
+        for i in options:
+            print(i)
 
         answer = input('请输入你的答案(输入u返回上一级,q退出)：')
         answer = answer.replace(' ', '')

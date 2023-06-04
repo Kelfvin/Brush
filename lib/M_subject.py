@@ -45,8 +45,10 @@ class Problem:
 
     def show(self):
         print(self.title)
-        for i in self.options:
-            print(i)
+        for index,option in enumerate(self.options):
+            letter = chr(ord('A') + index)
+            print(f'{letter}: ',end='')
+            print(option)
 
     def get_key(self):
         return self.key

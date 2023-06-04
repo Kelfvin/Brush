@@ -44,6 +44,7 @@ class Problem:
 
 
     def show(self):
+        print(f'({self.type}) ',end="")
         print(self.title)
         for index,option in enumerate(self.options):
             letter = chr(ord('A') + index)

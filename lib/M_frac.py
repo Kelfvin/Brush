@@ -16,6 +16,10 @@ def get_message():
     # sorted对字符串进行排序，并返回一个列表
     return message
 
+def get_files_in_directory(directory):
+    file_list = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f)) and not f.startswith('.')]
+    return file_list
+
 def erro_in_notion():
     print('错误！')
     input('输入任意键继续！')
@@ -23,7 +27,7 @@ def erro_in_notion():
 def react_import():
     clear()
     base_path = './data/bank/'
-    file_list = [f for f in os.listdir(f'{base_path}') if os.path.isfile(f'{base_path}{f}')]
+    file_list = get_files_in_directory(base_path)
     for i in file_list:
         with open(f'{base_path}{i}',mode='rt',encoding='utf-8') as file_in:
             content = file_in.read()

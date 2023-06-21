@@ -5,7 +5,7 @@ import pickle
 import lib.M_frac as M_frac
 import lib.M_menu as M_menu
 import lib.M_fault_note as M_fault_note
-
+from lib.rich_console import console
 
 
 def from_trace_to_subject(file_name):
@@ -44,7 +44,7 @@ class Problem:
 
 
     def show(self):
-        print(f'({self.type}) ',end="")
+        console.print(f'({self.type}) ',style='blue',end='')
         print(self.title)
         for index,option in enumerate(self.options):
             letter = chr(ord('A') + index)

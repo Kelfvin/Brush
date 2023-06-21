@@ -1,4 +1,4 @@
 data/fault_note/
-lib/
+lib/__pycache__/
 data/trace/
 data/trace/马克思主义原理

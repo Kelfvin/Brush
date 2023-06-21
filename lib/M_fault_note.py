@@ -82,9 +82,11 @@ def review_fault(file_name):
         print('错题回顾')
         print('({}/{})'.format(times, len(fault_dic)))
         print(f'此题记忆进度 ({review_times}/{3})')
-        print(title)
-        for i in options:
-            print(i)
+        print(f'({type}){title}')
+        for index,option in enumerate(options):
+            letter = chr(ord('A') + index)
+            print(f'{letter}: ',end='')
+            print(option)
 
         answer = input('请输入你的答案(输入u返回上一级,q退出)：')
         answer = answer.replace(' ', '')

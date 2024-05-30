@@ -2,3 +2,5 @@ data/fault_note/
 lib/__pycache__/
 data/trace/
 data/trace/马克思主义原理
+venv
+.idea

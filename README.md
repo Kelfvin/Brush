@@ -31,7 +31,7 @@ python3 Brush.py
 
   Windows环境下，直接运行brush文件夹下的brush.exe。（无需安装Python）
 
-  Tips.题库位于./brush/_internal/data/bank
+  Tips.题库位于./brush/data/bank
 
 ### 注意
 

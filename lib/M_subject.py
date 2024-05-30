@@ -76,7 +76,7 @@ class Section:
         for index in range(self.trace,length):
             M_frac.clear()
             item = self.problems[index]
-            print(f'{self.name}  ({self.trace}/{length})')
+            print(f'{self.name}  ({self.trace+1}/{length})')
             item.show()
             M_menu.show_exit_return_menu()
             answer = M_frac.get_message()

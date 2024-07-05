@@ -5,3 +5,5 @@ data/trace/马克思主义原理
 venv
 .idea
 build
+
+tmp/

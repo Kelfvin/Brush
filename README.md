@@ -15,42 +15,37 @@
 
 ## 使用步骤
 
-### 开发环境
 
-1. 确保本地环境安装了python3，并设置了对应的环境变量。
-2. 终端下切换工作目录到此项目
-3. 使用下面命令
+- 确保本地环境安装了python3，并设置了对应的环境变量。
 
 
-由于项目使用了rich库，所以需要安装rich库
+1. clone项目到目录
 
-```bash
-pip install rich
-```
+    ```bash
+    git clone https://github.com/Kelfvin/Brush.git
+    ```
 
-python启动主程序
+2. 进入项目目录
+
+    ```bash
+    cd Brush
+    ```
+
+3. 由于项目使用了rich库，所以需要安装rich库
+
+    ```bash
+    pip install rich
+    ```
+
+4. python启动主程序
 
 
-```bash
-python brush.py
-```
+    ```bash
+    python brush.py
+    ```
 
 
-
-
-#### 再封装提示
-
-  如你修改了项目代码，需要对项目进行再封装。请安装pyinstaller，在项目根目录下执行
-
-```bash
-pyinstaller --onefile --add-data "data;data"  brush.py --distpath .
-```
-
-### 开箱即用
-
-  Windows环境下，直接运行brush.exe。（无需安装Python）
-
-### 注意
+## 注意
 
    由于**每次导入题库会将./data/bank目录下的所有json题库文件一起导入，已导入的题库进度/错题数据会被重置**。
 

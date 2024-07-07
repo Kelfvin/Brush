@@ -1,6 +1,7 @@
 import json
 import pickle
 from typing import List
+from lib.config import problem_type_color
 
 
 import lib.M_frac as M_frac
@@ -31,8 +32,9 @@ class Problem:
         return True if self.key == answer else False
 
     def show(self):
-        console.print(f"({self.type}) ", style="blue", end="")
+        console.print(f"({self.type}) ", style=problem_type_color[self.type], end=" ")
         print(self.title)
+        print()
         for index, option in enumerate(self.options):
             letter = chr(ord("A") + index)
             print(f"{letter}: ", end="")

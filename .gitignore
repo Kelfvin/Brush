@@ -7,3 +7,5 @@ venv
 build
 
 tmp/
+
+__pycache__/

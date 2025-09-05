@@ -1,3 +1,5 @@
-pub mod models {
-    pub mod practice_book;
-}
+pub mod database;
+pub mod models;
+
+#[cfg(test)]
+mod test_utils;

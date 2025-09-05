@@ -1,25 +1,22 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PracticeBook {
-    name: String,
-    sections: Vec<Section>,
+pub struct Question {
+    pub id: Option<i64>,
+    pub title: String,                     // 题目
+    pub options: Vec<String>,              // 选项
+    pub key: Vec<char>,                    // 答案
+    pub wrong_times: Option<i32>,          // 答错的次数
+    pub remain_practice_time: Option<i32>, // 剩余联系次数
+    pub section_id: Option<i64>,           // 所属Section id
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Section {
-    questions: Vec<Question>,
-    #[serde(default)]
-    mistack_problems: Vec<Question>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-struct Question {
-    title: String,
-    options: Vec<String>,
-    key: Vec<char>,
-    wrong_times: Option<i32>,
-    remain_practice_time: Option<i32>,
+/// 检查答案的结果
+#[derive(Debug, PartialEq)]
+pub enum CheckResult {
+    AllCorrect,     // 全对,
+    AllWrong,       // 全错
+    PartialCorrect, // 部分正确
 }
 
 impl Question {
@@ -48,37 +45,9 @@ impl Question {
     }
 }
 
-/// 检查答案的结果
-#[derive(Debug, PartialEq)]
-pub enum CheckResult {
-    AllCorrect,     // 全对,
-    AllWrong,       // 全错
-    PartialCorrect, // 部分正确
-}
-
 #[cfg(test)]
 mod test {
-    use std::vec;
-
     use super::*;
-
-    const TEST_JSON: &str = r#"
-        {
-            "name": "测试练习册",
-            "sections": [
-                {
-                    "questions": [
-                        {
-                            "title": "测试题目",
-                            "options": ["A", "B", "C", "D"],
-                            "key": ["A"],
-                            "type": "MS"
-                        }
-                    ]
-                }
-            ]
-        }
-        "#;
 
     // 创建公共的 Question 实例
     fn create_test_question() -> Question {
@@ -93,13 +62,9 @@ mod test {
             key: vec!['A', 'B'],
             wrong_times: None,
             remain_practice_time: None,
+            section_id: None,
+            id: None,
         }
-    }
-
-    /// 测试能否解析成功文件
-    #[test]
-    fn can_parse() {
-        let book: PracticeBook = serde_json::from_str(TEST_JSON).unwrap();
     }
 
     #[test]
@@ -113,6 +78,7 @@ mod test {
         assert_eq!(question.check(&vec!['C']), AllWrong);
         assert_eq!(question.check(&vec!['A', 'B']), AllCorrect);
     }
+
     #[test]
     fn check_answer_case_insensitive() {
         use CheckResult::*;
@@ -124,6 +90,4 @@ mod test {
         assert_eq!(question.check(&vec!['c']), AllWrong);
         assert_eq!(question.check(&vec!['a', 'b']), AllCorrect);
     }
-
-    fn add_question_to_mistack_book() {}
 }

@@ -17,12 +17,12 @@ impl SectionDao {
             .execute(pool)
             .await?;
 
-        let id = res.last_insert_rowid();
-        section.id = Some(id);
+        let section_id = res.last_insert_rowid();
+        section.id = Some(section_id);
 
         // 修改所有题目的 section_id
         for question in &mut section.questions {
-            question.section_id = Some(id);
+            question.section_id = Some(section_id);
         }
 
         // 插入所有的题目
@@ -30,7 +30,7 @@ impl SectionDao {
             QuestionDao::insert(pool, question).await?;
         }
 
-        Ok(id)
+        Ok(section_id)
     }
 
     pub async fn select_by_id(pool: &SqlitePool, id: i64) -> Result<Section> {
@@ -55,7 +55,7 @@ impl SectionDao {
         pool: &sqlx::Pool<sqlx::Sqlite>,
         id: i64,
     ) -> Result<Vec<Section>> {
-        let mut sections: Vec<Section> = sqlx::query_as("SELECT * FROM sections WHERE book_id=?1")
+        let mut sections: Vec<Section> = sqlx::query_as("SELECT * FROM sections WHERE book_id=?")
             .bind(id)
             .fetch_all(pool)
             .await?;

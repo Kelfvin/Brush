@@ -47,20 +47,21 @@ impl QuestionDao {
         pool: &SqlitePool,
         ids: &Vec<i64>,
     ) -> Result<HashMap<i64, Vec<Question>>> {
-        let params: String = ids
-            .iter()
-            .map(|id| id.to_string())
-            .collect::<Vec<String>>()
-            .join(", ");
-
-        let questions: Vec<Question> = sqlx::query_as(
+        let place_holders: String = ids.iter().map(|_| "?").collect::<Vec<&str>>().join(", ");
+        let sql = format!(
             "SELECT *
                 FROM questions
-                WHERE section_id IN (?)",
-        )
-        .bind(params)
-        .fetch_all(pool)
-        .await?;
+                WHERE section_id IN ({})",
+            &place_holders
+        );
+
+        let mut query = sqlx::query_as(&sql);
+
+        for id in ids {
+            query = query.bind(id);
+        }
+
+        let questions: Vec<Question> = query.fetch_all(pool).await?;
 
         let mut map: HashMap<i64, Vec<Question>> = HashMap::new();
         for question in questions {

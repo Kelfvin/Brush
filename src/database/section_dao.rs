@@ -1,5 +1,7 @@
-use anyhow::Result;
-use rusqlite::{Connection, params};
+use std::collections::HashMap;
+
+use anyhow::{Ok, Result};
+use sqlx::SqlitePool;
 
 use crate::{
     database::question_dao::QuestionDao,
@@ -8,64 +10,70 @@ use crate::{
 
 pub struct SectionDao;
 impl SectionDao {
-    pub fn insert(conn: &Connection, section: &mut Section, book_id: i64) -> Result<i64> {
-        conn.execute(
-            "INSERT INTO sections(book_id,name) VALUES(?1,?2)",
-            params![book_id, section.name],
-        )?;
+    pub async fn insert(pool: &SqlitePool, section: &mut Section) -> Result<i64> {
+        let res = sqlx::query("INSERT INTO sections(book_id,name) VALUES(?1,?2)")
+            .bind(section.book_id.unwrap())
+            .bind(&section.name)
+            .execute(pool)
+            .await?;
 
-        let id = conn.last_insert_rowid();
+        let id = res.last_insert_rowid();
         section.id = Some(id);
+
+        // 修改所有题目的 section_id
+        for question in &mut section.questions {
+            question.section_id = Some(id);
+        }
 
         // 插入所有的题目
         for question in &mut section.questions {
-            QuestionDao::insert(conn, question, id)?;
+            QuestionDao::insert(pool, question).await?;
         }
 
         Ok(id)
     }
 
-    pub fn select_with_section_id(conn: &Connection, id: i64) -> Result<Section> {
-        let mut stmt = conn.prepare(
-            "SELECT *
-                FROM sections
-                WHERE id=?1",
-        )?;
+    pub async fn select_by_id(pool: &SqlitePool, id: i64) -> Result<Section> {
+        let mut section: Section =
+            sqlx::query_as::<_, Section>("SELECT * FROM sections WHERE id=?1")
+                .bind(id)
+                .fetch_one(pool)
+                .await?;
 
-        let (name, book_id) = stmt.query_row([id], |row| {
-            Ok((row.get::<_, String>("name")?, row.get::<_, i64>("book_id")?))
-        })?;
+        let questions: Vec<Question> =
+            sqlx::query_as("SELECT * FROM questions WHERE section_id=?1")
+                .bind(id)
+                .fetch_all(pool)
+                .await?;
 
-        // 查询该章节下的所有题目
-        let questions: Vec<Question> = QuestionDao::select_with_section_id(conn, id)?;
-
-        let section = Section {
-            id: Some(id),
-            name: name,
-            questions: questions,
-            book_id: Some(book_id),
-        };
+        section.questions = questions;
 
         Ok(section)
     }
-}
 
-#[cfg(test)]
-mod test {
-    use crate::{
-        database::{book_dao::BookDao, database::Database},
-        models::book::Book,
-        test_utils::EXAMPLE_JSON,
-    };
+    pub async fn select_with_book_id(
+        pool: &sqlx::Pool<sqlx::Sqlite>,
+        id: i64,
+    ) -> Result<Vec<Section>> {
+        let mut sections: Vec<Section> = sqlx::query_as("SELECT * FROM sections WHERE book_id=?1")
+            .bind(id)
+            .fetch_all(pool)
+            .await?;
 
-    #[test]
-    fn add_book_and_retrieve() {
-        let mut book: Book = serde_json::from_str(EXAMPLE_JSON).unwrap();
+        let section_ids = sections
+            .iter()
+            .map(|section| section.id.unwrap_or(-1)) // 实际不可能
+            .collect::<Vec<i64>>();
 
-        let db = Database::open_in_memory();
+        let problems_group: HashMap<i64, Vec<Question>> =
+            QuestionDao::select_with_section_ids(pool, &section_ids).await?;
 
-        let id = BookDao::insert(db.conn(), &mut book).unwrap();
+        for (section_id, questions) in problems_group {
+            if let Some(section) = sections.iter_mut().find(|s| s.id.unwrap() == section_id) {
+                section.questions = questions;
+            }
+        }
 
-        println!("id: {}", id);
+        Ok(sections)
     }
 }

@@ -1,14 +1,22 @@
 use serde::{Deserialize, Serialize};
+use sqlx::prelude::FromRow;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, FromRow, PartialEq)]
 pub struct Question {
     pub id: Option<i64>,
-    pub title: String,                     // 题目
-    pub options: Vec<String>,              // 选项
-    pub key: Vec<char>,                    // 答案
-    pub wrong_times: Option<i32>,          // 答错的次数
-    pub remain_practice_time: Option<i32>, // 剩余联系次数
-    pub section_id: Option<i64>,           // 所属Section id
+
+    pub title: String, // 题目
+    #[sqlx(json)]
+    pub options: Vec<String>, // 选项
+    #[sqlx(json)]
+    pub key: Vec<char>, // 答案
+
+    #[serde(default)]
+    pub wrong_times: i32, // 答错的次数
+    #[serde(default)]
+    pub remain_practice_time: i32, // 剩余练习次数
+
+    pub section_id: Option<i64>, // 所属Section id
 }
 
 /// 检查答案的结果
@@ -60,8 +68,8 @@ mod test {
                 "DDDDDDDDD".to_string(),
             ],
             key: vec!['A', 'B'],
-            wrong_times: None,
-            remain_practice_time: None,
+            wrong_times: 0,
+            remain_practice_time: 1,
             section_id: None,
             id: None,
         }

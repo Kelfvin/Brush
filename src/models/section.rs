@@ -14,12 +14,12 @@ pub struct Section {
 #[cfg(test)]
 mod test {
 
-    use crate::{models::book::Book, test_utils::EXAMPLE_JSON};
+    use crate::{database::utils_dao::EXAMPLE_JSON, models::book::Book};
 
     /// 测试能否解析成功文件
     #[test]
     fn can_parse() {
         let book: Book = serde_json::from_str(EXAMPLE_JSON).unwrap();
-        assert_eq!(book.name, "Test Book");
+        assert_eq!(book.name, "Hello Brush");
     }
 }

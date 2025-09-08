@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use anyhow::{Ok, Result};
+use itertools::Itertools;
 use sqlx::SqlitePool;
 
 use crate::{
@@ -79,5 +80,38 @@ impl SectionDao {
         }
 
         Ok(sections)
+    }
+
+    pub async fn selection_group_by_book_ids(
+        pool: &sqlx::Pool<sqlx::Sqlite>,
+        book_ids: &[i64],
+    ) -> Result<HashMap<i64, Vec<Section>>> {
+        if book_ids.is_empty() {
+            return Ok(HashMap::new());
+        }
+
+        let mut query_builder =
+            sqlx::QueryBuilder::new("SELECT * FROM sections WHERE book_id IN (");
+
+        let mut separated = query_builder.separated(", ");
+
+        for book_id in book_ids {
+            separated.push_bind(book_id);
+        }
+
+        separated.push_unseparated(")");
+
+        let sections: Vec<Section> = query_builder.build_query_as().fetch_all(pool).await?;
+
+        let map = sections
+            .into_iter()
+            .chunk_by(
+                |sec| sec.book_id.unwrap_or(-1), // 实际不可能
+            )
+            .into_iter()
+            .map(|(book_id, group)| (book_id, group.collect()))
+            .collect();
+
+        Ok(map)
     }
 }

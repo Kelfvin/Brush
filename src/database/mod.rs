@@ -33,7 +33,7 @@ impl Database {
 
     /// 创建表
     pub async fn create_tables(&self) -> Result<()> {
-        // 创建练习册表
+        // Create books table
         sqlx::query(
             "CREATE TABLE if NOT EXISTS books(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,6 +44,7 @@ impl Database {
         .execute(&self.pool)
         .await?;
 
+        // Create sections table
         sqlx::query(
             "CREATE TABLE IF NOT EXISTS sections (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -56,6 +57,7 @@ impl Database {
         .execute(&self.pool)
         .await?;
 
+        // Create questions table
         sqlx::query(
             "CREATE TABLE IF NOT EXISTS questions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,7 +66,7 @@ impl Database {
                 options TEXT NOT NULL,
                 key TEXT NOT NULL,
                 wrong_times INTEGER DEFAULT 0,
-                remain_practice_time INTEGER,
+                remain_practice_times INTEGER,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (section_id) REFERENCES sections (id)
             )",

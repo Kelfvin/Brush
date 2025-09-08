@@ -14,7 +14,7 @@ pub struct Question {
     #[serde(default)]
     pub wrong_times: i32, // 答错的次数
     #[serde(default)]
-    pub remain_practice_time: i32, // 剩余练习次数
+    pub remain_practice_times: i32, // 剩余练习次数
 
     pub section_id: Option<i64>, // 所属Section id
 }
@@ -69,7 +69,7 @@ mod test {
             ],
             key: vec!['A', 'B'],
             wrong_times: 0,
-            remain_practice_time: 1,
+            remain_practice_times: 1,
             section_id: None,
             id: None,
         }

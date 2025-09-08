@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use anyhow::Result;
+use itertools::Itertools;
 use sqlx::SqlitePool;
 
 use crate::models::question::Question;
@@ -47,28 +48,28 @@ impl QuestionDao {
         pool: &SqlitePool,
         ids: &Vec<i64>,
     ) -> Result<HashMap<i64, Vec<Question>>> {
-        let place_holders: String = ids.iter().map(|_| "?").collect::<Vec<&str>>().join(", ");
-        let sql = format!(
-            "SELECT *
+        let mut query_builder = sqlx::QueryBuilder::new(
+            "
+                SELECT *
                 FROM questions
-                WHERE section_id IN ({})",
-            &place_holders
+                WHERE section_id IN (
+            ",
         );
 
-        let mut query = sqlx::query_as(&sql);
-
+        let mut separated = query_builder.separated(",");
         for id in ids {
-            query = query.bind(id);
+            separated.push_bind(id);
         }
+        separated.push_unseparated(")");
 
-        let questions: Vec<Question> = query.fetch_all(pool).await?;
+        let questions: Vec<Question> = query_builder.build_query_as().fetch_all(pool).await?;
 
-        let mut map: HashMap<i64, Vec<Question>> = HashMap::new();
-        for question in questions {
-            map.entry(question.section_id.unwrap())
-                .or_insert(vec![])
-                .push(question);
-        }
+        let map = questions
+            .into_iter()
+            .chunk_by(|q| q.section_id.unwrap())
+            .into_iter()
+            .map(|(group_id, qs)| (group_id, qs.collect()))
+            .collect();
 
         Ok(map)
     }

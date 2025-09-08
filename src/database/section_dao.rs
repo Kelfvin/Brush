@@ -51,20 +51,24 @@ impl SectionDao {
         Ok(section)
     }
 
+    /// 根据练习册 ID 查询所有章节
     pub async fn select_with_book_id(
         pool: &sqlx::Pool<sqlx::Sqlite>,
         id: i64,
     ) -> Result<Vec<Section>> {
+        // 查询给定 id 的 book 的所有 sections
         let mut sections: Vec<Section> = sqlx::query_as("SELECT * FROM sections WHERE book_id=?")
             .bind(id)
             .fetch_all(pool)
             .await?;
 
+        // 收集所有的 section 的 ID 用于查询 questions
         let section_ids = sections
             .iter()
             .map(|section| section.id.unwrap_or(-1)) // 实际不可能
             .collect::<Vec<i64>>();
 
+        // query questions by section_ids
         let problems_group: HashMap<i64, Vec<Question>> =
             QuestionDao::select_with_section_ids(pool, &section_ids).await?;
 

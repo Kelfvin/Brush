@@ -1,11 +1,5 @@
-data/fault_note/
-lib/__pycache__/
-data/trace/
-data/trace/马克思主义原理
-venv
-.idea
-build
+target/
 
-tmp/
+.DS_Store
 
-__pycache__/
+brush.db

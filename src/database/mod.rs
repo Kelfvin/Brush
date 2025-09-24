@@ -3,10 +3,15 @@ pub mod question_dao;
 pub mod section_dao;
 pub mod utils_dao;
 
-use crate::database::utils_dao::UtilsDao;
-use anyhow::{Ok, Result};
-use sqlx::{SqlitePool, sqlite::SqlitePoolOptions};
+use std::str::FromStr;
 
+use crate::app_directory::AppDirs;
+use crate::database::utils_dao::UtilsDao;
+use anyhow::Result;
+use sqlx::{
+    SqlitePool,
+    sqlite::{SqliteConnectOptions, SqlitePoolOptions},
+};
 #[derive(Debug)]
 pub struct Database {
     pool: SqlitePool,
@@ -14,6 +19,24 @@ pub struct Database {
 }
 
 impl Database {
+    /// 获取数据库文件位置
+    pub fn get_db_url() -> String {
+        let db_url_prefix = "sqlite://";
+        // 1. 从环境变量中获取
+        if let Ok(path) = std::env::var("BRUSH_DATA_PATH") {
+            return format!("{db_url_prefix}{path}");
+        }
+
+        // 默认存放目录
+        let app_dir = AppDirs::from("brush".to_string());
+
+        let datapath = app_dir.data_dir();
+
+        let db_url = format!("{}{}/data.db", db_url_prefix, datapath.to_str().unwrap());
+
+        db_url
+    }
+
     /// 获取数据库连接池
     pub fn pool(&self) -> &SqlitePool {
         &self.pool
@@ -32,7 +55,8 @@ impl Database {
 
     /// 指定路径创建或打开数据库，用于生产环境
     pub async fn new(db_url: &str) -> Result<Self> {
-        let pool = SqlitePoolOptions::new().connect(db_url).await?;
+        let opts = SqliteConnectOptions::from_str(db_url)?.create_if_missing(true);
+        let pool = SqlitePool::connect_with(opts).await?;
         let db = Database { pool };
         db.init().await?;
         Ok(db)
@@ -71,7 +95,7 @@ impl Database {
         sqlx::query(
             "CREATE TABLE IF NOT EXISTS version (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                version TEXT NOT NULL,
+                version INTEGER NOT NULL,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )",
         )
@@ -182,6 +206,10 @@ impl Database {
 
 #[cfg(test)]
 mod test {
+    use sqlx::database;
+
+    use crate::app;
+
     use super::*;
 
     #[tokio::test]
@@ -193,12 +221,34 @@ mod test {
         let mut table_names = db.get_all_tables_info().await.unwrap().clone();
         table_names.sort();
 
-        let mut expected = vec!["books", "questions", "sections", "sqlite_sequence"];
+        let mut expected = vec![
+            "books",
+            "questions",
+            "sections",
+            "sqlite_sequence",
+            "version",
+            "history",
+        ];
         expected.sort();
 
         println!("====== Tables ======");
         for name in table_names.iter() {
             println!("{name}");
         }
+
+        assert_eq!(table_names, expected);
+    }
+
+    #[test]
+    fn test_db_url() {
+        let db_url = Database::get_db_url();
+        println!("{db_url}");
+    }
+
+    #[tokio::test]
+    async fn test_connection() {
+        let db_url = Database::get_db_url();
+        dbg!(&db_url);
+        let database = Database::new(&db_url).await.expect("连接数据库失败");
     }
 }
